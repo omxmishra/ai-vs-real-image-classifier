@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.pkl
+*.h5
+*.pt
+.env
+data/raw/
+models/saved_models/
