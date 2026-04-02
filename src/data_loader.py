@@ -15,3 +15,4 @@ def get_dataloaders(train_dir, test_dir, batch_size=32):
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     
+    return train_loader, test_loader, train_dataset.classes
