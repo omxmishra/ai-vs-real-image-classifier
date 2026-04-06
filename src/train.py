@@ -60,3 +60,6 @@ def train():
 
     print("Model saved at:", MODEL_PATH)
 
+
+if __name__ == "__main__":
+    train()
