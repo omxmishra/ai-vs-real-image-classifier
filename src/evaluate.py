@@ -58,3 +58,6 @@ def evaluate():
     plt.title("Confusion Matrix")
     plt.show()
 
+
+if __name__ == "__main__":
+    evaluate()
