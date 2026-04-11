@@ -7,21 +7,18 @@ import matplotlib.pyplot as plt
 
 from data_loader import get_dataloaders
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Paths
-TRAIN_DIR = Path("../data/train")
-TEST_DIR = Path("../data/test")
-MODEL_PATH = Path("../models/saved_models/model.pth")
+TRAIN_DIR = BASE_DIR / "data/train"
+TEST_DIR = BASE_DIR / "data/test"
+MODEL_PATH = BASE_DIR / "models/saved_models/model.pth"
 
-# Device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def evaluate():
-    # Load data
     _, test_loader, classes = get_dataloaders(TRAIN_DIR, TEST_DIR)
 
-    # Load model
     model = models.resnet18(pretrained=False)
     model.fc = nn.Linear(model.fc.in_features, 2)
     model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
@@ -50,7 +47,6 @@ def evaluate():
     accuracy = 100 * correct / total
     print(f"Test Accuracy: {accuracy:.2f}%")
 
-    # Confusion Matrix
     cm = confusion_matrix(all_labels, all_preds)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=classes)
     disp.plot()
