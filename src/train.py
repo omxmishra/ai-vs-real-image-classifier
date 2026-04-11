@@ -6,21 +6,19 @@ from pathlib import Path
 
 from data_loader import get_dataloaders
 
+# Base path (FIXED)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Paths
-TRAIN_DIR = Path("../data/train")
-TEST_DIR = Path("../data/test")
-MODEL_PATH = Path("../models/saved_models/model.pth")
+TRAIN_DIR = BASE_DIR / "data/train"
+TEST_DIR = BASE_DIR / "data/test"
+MODEL_PATH = BASE_DIR / "models/saved_models/model.pth"
 
-# Device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train():
-    # Load data
     train_loader, test_loader, classes = get_dataloaders(TRAIN_DIR, TEST_DIR)
 
-    # Model
     model = models.resnet18(pretrained=True)
 
     for param in model.parameters():
@@ -29,11 +27,9 @@ def train():
     model.fc = nn.Linear(model.fc.in_features, 2)
     model = model.to(device)
 
-    # Loss + optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.fc.parameters(), lr=0.001)
 
-    # Training
     EPOCHS = 5
 
     for epoch in range(EPOCHS):
@@ -54,7 +50,6 @@ def train():
 
         print(f"Epoch [{epoch+1}/{EPOCHS}] Loss: {running_loss:.4f}")
 
-    # Save model
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), MODEL_PATH)
 
